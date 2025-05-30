@@ -74,7 +74,7 @@ package.json 파일 기준으로 아래와 같은 패키지가 필요합니다
 
 # 3. 설치 및 실행
 
-```shell
+```
 # 저장소 클론
 git clone https://github.com/g2h/webseclab.git
 cd webseclab
@@ -84,7 +84,7 @@ npm install
 
 # 개발 서버 실행
 npm start
-``
+```
 
 # 중요 주의사항
 ⚠️ 이 플랫폼은 교육 및 실습 목적으로만 사용해야 합니다.<br>
