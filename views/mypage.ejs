@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>마이페이지</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <h2>📄 마이페이지 </h2>
+    <div id="profile" class="mb-4 text-muted">로딩 중...</div>
+    <ul id="post-list" class="list-group mb-4"></ul>
+    <div id="action-buttons" class="d-grid gap-2">
+      <a href="/" class="btn btn-outline-primary">홈으로</a>
+      <a href="/logout" class="btn btn-danger">로그아웃</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const overrideId = params.get('id');
+
+    function renderPage(user, posts) {
+      document.getElementById('profile').innerHTML = `
+        <h5>${user.username} 님</h5>
+        <p>ID: ${user.id}</p>
+        <p>이메일: ${user.email}</p>
+      `;
+      const list = document.getElementById('post-list');
+      list.innerHTML = '';
+      if (!posts.length) {
+        list.innerHTML = '<li class="list-group-item text-muted">게시글 없음</li>';
+      } else {
+        posts.forEach(p => {
+          const li = document.createElement('li');
+          li.className = 'list-group-item d-flex justify-content-between align-items-center';
+          li.innerHTML = `
+            <a href="/xss/view/${p.id}" class="text-decoration-none">
+              ${p.title.length>20 ? p.title.substr(0,20)+'…' : p.title}
+            </a>
+            <span class="badge bg-secondary">${new Date(p.created_at).toLocaleDateString()}</span>
+          `;
+          list.appendChild(li);
+        });
+      }
+      if (user.username === 'admin' || user.id == 3) {
+        const btn = document.createElement('a');
+        btn.href = `/admin/status?id=${user.id}`;
+        btn.className = 'btn btn-warning w-100 mb-2';
+        btn.textContent = '📊 관리자 페이지로 이동';
+        const container = document.getElementById('action-buttons');
+        container.insertBefore(btn, container.lastElementChild);
+      }
+    }
+
+    function loadData(userId) {
+      fetch(`/mypage/data?id=${userId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            document.getElementById('profile').textContent = data.error;
+          } else {
+            renderPage(data.user, data.posts);
+          }
+        })
+        .catch(err => {
+          console.error('Fetch error (data):', err);
+          document.getElementById('profile').textContent = '데이터 로딩 실패';
+        });
+    }
+
+    if (overrideId) {
+      loadData(overrideId);
+    } else {
+      fetch('/api/me')
+        .then(res => res.json())
+        .then(({ id }) => loadData(id))
+        .catch(err => {
+          console.error('Fetch error (me):', err);
+          document.getElementById('profile').textContent = '데이터 로딩 실패';
+        });
+    }
+  </script>
+</body>
+</html>

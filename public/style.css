@@ -1,0 +1,56 @@
+/* 배너 전체 */
+.banner {
+	  background-color: #1f2937;         /* 다크 그레이 */
+	    color: white;
+	      padding: 15px 40px;
+	        display: flex;
+		  justify-content: space-between;
+		    align-items: center;
+		      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+		        font-family: 'Segoe UI', sans-serif;
+		}
+
+		/* 로고 또는 타이틀 */
+		.banner-title {
+			  font-size: 24px;
+			    font-weight: bold;
+		    }
+
+		    /* 인증 버튼 영역 */
+		    .auth-buttons {
+			      display: flex;
+			        align-items: center;
+				  gap: 20px;
+			  }
+
+			  .auth-buttons a {
+				    color: white;
+				      text-decoration: none;
+				        padding: 8px 14px;
+					  border: 1px solid white;
+					    border-radius: 5px;
+					      transition: background-color 0.3s ease;
+				      }
+
+				      .auth-buttons a:hover {
+					        background-color: white;
+						  color: #1f2937;
+					  }
+
+					  .auth-buttons span {
+						    font-weight: 500;
+					    }
+
+					    @media (max-width: 600px) {
+						      .banner {
+							          flex-direction: column;
+								      align-items: flex-start;
+								        }
+
+									  .auth-buttons {
+										      margin-top: 10px;
+										          flex-direction: column;
+											      gap: 10px;
+											        }
+											}
+

@@ -1,0 +1,23 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="decode"><%- post.title %></h2>
+  <a href="/" class="btn btn-outline-secondary">🏠 메인페이지</a>
+</div>
+
+<div class="container mt-4">
+  <p class="text-muted">작성자: <span class="decode"><%= post.author %></span> | <%= new Date(post.created_at).toLocaleString() %></p>
+  <hr>
+  <div class="mb-4 decode"><%- post.content %></div>
+
+  <script>
+    document.querySelectorAll('.decode').forEach(el => {
+      el.innerHTML = el.textContent;
+    });
+  </script>
+
+  <div class="mt-3 d-flex gap-2">
+    <a href="/xss/verify-form/<%= post.id %>?purpose=edit" class="btn btn-warning">수정</a>
+    <a href="/xss/verify-form/<%= post.id %>?purpose=delete" class="btn btn-danger">삭제</a>
+    <a href="/xss" class="btn btn-secondary">목록</a>
+  </div>
+</div>
